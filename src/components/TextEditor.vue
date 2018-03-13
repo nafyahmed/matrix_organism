@@ -2,11 +2,11 @@
   <div class="TextEditor">
 
 <ul class="tabs">
-  <li class="active" rel="tab1">Tab 1</li>
-  <li rel="tab2">Tab 2</li>
-  <li rel="tab3">Tab 3</li>
-  <li rel="tab4">Tab 4</li>
-  <li rel="tab5">+</li> 
+  <li class="active" rel="tab1"><input type="text" readonly value="Tab 1"></li>
+  <li class="active" rel="tab2"><input type="text" readonly value="Tab 2"></li>
+  <li class="active" rel="tab3"><input type="text" readonly value="Tab 3"></li>
+  <li class="active" rel="tab4"><input type="text" readonly value="Tab 4"></li>
+  <li class="adding_tab" rel="add">+</li> 
 </ul>
 
 
@@ -21,7 +21,7 @@
 
 
 <!-- Tab 2 -->
-  <h3 class="tab_drawer_heading" id="one" rel="tab2">Tab 2</h3>
+  <h3 class="tab_drawer_heading" id="one" rel="tab2"></h3>
   <div id="tab2" class="tab_content">
     <div class="wrap">
        <div class="editor" id="editor" contenteditable></div>
@@ -100,9 +100,24 @@ window.onclick = function(event) {
 }
 
 
-$("li").click(function(){
-  
+$(".adding_tab").click(function(){
+  console.log("this = " + $(this).parent().append('  <li class="active" rel="tab4"><input type="text" readonly value="Tab 4"></li>'));
+
 });
+
+$(".active").dblclick(function(){
+  console.log("clicked");
+  $(this).find('input').removeAttr('readonly');
+});
+
+      $('input').keypress(function (e) {
+        var keycode = (e.keyCode ? e.keyCode : e.which);
+          if(keycode == '13'){
+            $(this).attr('readonly', 'readonly');
+            //update the database
+          }
+
+        });
 
 $("#editor").keypress(function(e){
   // console.log($("#editor").text());
@@ -515,6 +530,14 @@ ul.tabs li.active {
 }
 
 
+input{
+  background-color: black;
+  color: white;
+  text-align: center;
+  outline: none;
+    box-shadow: none;
+
+}
 
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="matrix">
 <!--      <div v-for="data in myJson" id="json_content">{{data}}</div>
  -->     <div id='searchBar'>
   <form class="searchform group">
@@ -161,7 +161,8 @@ th {
   white-space: nowrap;
   border: 1px solid #ddd;
   padding: 20px;
-  width: 185px;
+ /* width: 185px;
+ */
 }
 
 th {
@@ -303,7 +304,15 @@ table{
 
 
 td{
+  width: 10px;
 }
 
+
+#matrix{
+      resize: both;
+    overflow: auto;
+    width:;
+    height:;
+}
 
 </style>
