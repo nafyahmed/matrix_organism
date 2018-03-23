@@ -2,10 +2,10 @@
   <div class="TextEditor">
 
 <ul class="tabs">
-  <li class="active" rel="tab1"><input type="text" readonly value="Tab 1"></li>
-  <li class="active" rel="tab2"><input type="text" readonly value="Tab 2"></li>
-  <li class="active" rel="tab3"><input type="text" readonly value="Tab 3"></li>
-  <li class="active" rel="tab4"><input type="text" readonly value="Tab 4"></li>
+  <li class="active" rel="tab1"><input class="text_input" type="text" readonly value="Tab 1"></li>
+  <li class="active" rel="tab2"><input class="text_input" type="text" readonly value="Tab 2"></li>
+  <li class="active" rel="tab3"><input class="text_input" type="text" readonly value="Tab 3"></li>
+  <li class="active" rel="tab4"><input class="text_input" type="text" readonly value="Tab 4"></li>
   <li class="adding_tab" rel="add">+</li> 
 </ul>
 
@@ -15,8 +15,11 @@
  <!-- Tab 1 -->
   <div id="tab1" class="tab_content">
     <div class="wrap">
+         <div class="toolbar">
+   </div>
    <div class="editor" id="editor" contenteditable></div>
   </div>
+  <button class="the_submit">Submit</button>
 </div>
 
 
@@ -26,6 +29,7 @@
     <div class="wrap">
        <div class="editor" id="editor" contenteditable></div>
     </div>
+      <button class="the_submit">Submit</button>
   </div>
 
 <!-- Tab 3 -->
@@ -34,6 +38,7 @@
     <div class="wrap">
        <div class="editor" id="editor" contenteditable></div>
     </div>
+    <button class="the_submit">Submit</button>
   </div>
 
   <!-- Tab 4 -->
@@ -42,6 +47,7 @@
     <div class="wrap">
        <div class="editor" id="editor" contenteditable></div>
     </div>
+      <button class="the_submit">Submit</button>
   </div>
 </div>
 
@@ -241,20 +247,19 @@ $("#editor").keypress(function(e){
 
 <style scoped>
 body {
+   background: #525764;
    font-family: Arial, sans-serif;
    font-size: 16px;
 }
 
 .wrap {
-	position: relative;
-   width: 100%;
+   width: 70%;
+   min-width: 562px;
+   margin-left: 10%;
    background: #fafafa;
-/*   border-radius: 8px;
-*/   box-shadow: 0 5px 8px 0 rgba(0,0,0,.4);
+   border-radius: 8px;
+   box-shadow: 0 5px 8px 0 rgba(0,0,0,.4);
    padding: 10px;
-   float:right;
-  /* top: -55px;*/
-
 }
 
 .toolbar {
@@ -281,9 +286,23 @@ button:hover {
    color: #777;
 }
 
+#bold,
+#italic,
+#underline {
+   font-size: 18px;
+}
 
+#underline,
+#align-right {
+   margin-right: 17px;
+}
+
+#align-left {
+   margin-left: 17px;
+}
 
 select {
+   height: 24px;
    font-size: 15px;
    font-weight: bold;
    color: #444;
@@ -309,6 +328,7 @@ select > option {
    padding: 1px 2px 1px 3px;
    border-radius: 3px;
    border-color: #a6a6a6;
+   margin-top: -1px;
 }
 
 .sp-replacer:hover {
@@ -321,6 +341,7 @@ select > option {
    height: 15px;
    border: none;
    margin-top: 2px;
+   margin-right: 3px;
 }
 
 .sp-preview-inner, 
@@ -330,8 +351,10 @@ select > option {
 }
 
 .editor {
+   position: relative;
    width: 100%;
-   height: 210px;
+   height: 60vh;
+   margin: 0 auto;
    padding: 20px;
    background: #fcfcfc;
    border-radius: 3px;
@@ -341,112 +364,6 @@ select > option {
    word-break: break-all;
    outline: none;
 }
-
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-
-  .color-wrapper {
-    position: relative;
-    width: 600px;
-    margin: 20px auto;
-    float: left;
-  }
-
-  .color-wrapper p {
-    margin-bottom: 5px;
-  }
-
-  input.call-picker {
-    border: 1px solid #AAA;
-    color: #666;
-    text-transform: uppercase;
-    float: left;    
-    outline: none;
-    padding: 10px;
-    text-transform: uppercase;
-    width: 85px;
-  }
-
-  .color-picker {
-    width: 500px;
-    background: #F3F3F3;
-    height: 81px;
-    padding: 5px;
-    border: 5px solid #fff;
-    box-shadow: 0px 0px 3px 1px #DDD;
-    position: absolute;
-    top: 61px;
-    left: 2px;
-  }
-
-  .color-holder {
-    background: #fff;
-    cursor: pointer;
-    border: 1px solid #AAA;
-    width: 40px;
-    height: 36px;
-    float: left;
-    margin-left: 5px;
-  }
-
-  .color-picker .color-item {
-  
-    cursor: pointer;
-    width: 10px;
-    height: 10px;
-    list-style-type: none;
-    float: left;
-    margin: 2px;
-    border: 1px solid #DDD;
-    list-style-type: none;
-  }
-
-  #color-picker li{
-    float: left;
-  }
-
-  .color-picker .color-item:hover {
-    border: 1px solid #666;
-    opacity: 0.8;
-    -moz-opacity: 0.8;
-    filter:alpha(opacity=8);
-  }
-
   ul.tabs {
   margin: 0;
   padding: 0;
@@ -539,6 +456,18 @@ input{
 
 }
 
+.the_submit{
+  background-color: black;
+  float: right;
+  color: white;
+  width: 100px;
+  margin-bottom: 10px;
+  margin-right: 80px;
+}
 
+
+.text_input{
+  cursor: pointer;
+}
 
 </style>

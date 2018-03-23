@@ -1,7 +1,5 @@
 <template>
-
   <div id="app">
-    <hr>
     <div id="login" v-if="sign_in">
       <div id="loginMenu" className="container">
         <div className="row" id="loginMenu2">
@@ -34,12 +32,18 @@
  </div>
 
     <div id="content" v-if="logged_in">
-       <div id='matrix_element' style=" float: left; ">
+                     <div id="matrix_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%; float: left; color: white;">Organism Matrix</div>
+                            <div id="text_editor_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%; float: right; color: white;">Text Editor</div>
+
+       <div id='matrix_element' style=" float: left;">
+
       <Matrix></Matrix>
     </div>
-    <div id='text_editor' style="width: 750px; float: right; margin-right: 150px">
+    <div id='text_editor' style="width: 710px; float: right; margin-right: 10px; ">
       <TextEditor></TextEditor>
     </div>
+    <div class="vr"></div>
+
 </div>
 <!--   <label>Name</label>
   <input type="text" v-model="name" />
@@ -154,6 +158,8 @@ export default {
 
 <style>
 body {
+  background-image: url("background2.jpg");
+
   background-color: #007bff;
 }
 td{
@@ -329,5 +335,15 @@ label {
  position: absolute;
  left: 40%;
  top: 80px;
+}
+
+.vr{
+  position: relative;
+    width:1px;
+  display:table-cell;
+  background-color:black;
+  height: 1000px;
+  float: right;
+  margin-right: 150px;
 }
 </style>
