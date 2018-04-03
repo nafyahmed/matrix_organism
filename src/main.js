@@ -2,10 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import TextEditor from './components/TextEditor'
+import Matrix from './components/Matrix'
 import * as firebase from 'firebase'
 import router from './router'
-  import 'bootstrap/dist/css/bootstrap.css'
-  import jQuery from 'jquery/dist/jquery.js'
+import 'bootstrap/dist/css/bootstrap.css'
+import jQuery from 'jquery/dist/jquery.js'
+
+import {store} from './components/store/store.js';
+
 
 Vue.config.productionTip = false
 Vue.use(VueFire);
@@ -14,6 +19,7 @@ Vue.use(VueFire);
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
   created (){

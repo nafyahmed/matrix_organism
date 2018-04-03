@@ -98,7 +98,6 @@ $("#search-box").keyup(function(){
             else{
                 //document.getElementById("search-box").getElementsByTagName("tr")[i].style.display = "none";
                 $("tr").eq(i).css("display", "none");
-   
             }
         }
      });

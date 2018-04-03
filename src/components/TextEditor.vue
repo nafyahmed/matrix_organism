@@ -2,55 +2,17 @@
   <div class="TextEditor">
 
 <ul class="tabs">
-  <li class="active" rel="tab1"><input class="text_input" type="text" readonly value="Tab 1"></li>
-  <li class="active" rel="tab2"><input class="text_input" type="text" readonly value="Tab 2"></li>
-  <li class="active" rel="tab3"><input class="text_input" type="text" readonly value="Tab 3"></li>
-  <li class="active" rel="tab4"><input class="text_input" type="text" readonly value="Tab 4"></li>
-  <li class="adding_tab" rel="add">+</li> 
+  <li class="adding_tab" rel="add" v-on:click="adding_tab">+</li> 
+  <li v-for="(value, key, index) in tab_names">{{value}}</li>
 </ul>
 
 
 <div class="tab_container">
  
- <!-- Tab 1 -->
-  <div id="tab1" class="tab_content">
-    <div class="wrap">
-         <div class="toolbar">
-   </div>
-   <div class="editor" id="editor" contenteditable></div>
-  </div>
-  <button class="the_submit">Submit</button>
+<!-- load from fb-->
+
+
 </div>
-
-
-<!-- Tab 2 -->
-  <h3 class="tab_drawer_heading" id="one" rel="tab2"></h3>
-  <div id="tab2" class="tab_content">
-    <div class="wrap">
-       <div class="editor" id="editor" contenteditable></div>
-    </div>
-      <button class="the_submit">Submit</button>
-  </div>
-
-<!-- Tab 3 -->
-  <h3 class="tab_drawer_heading" rel="tab3">Tab 3</h3>
-  <div id="tab3" class="tab_content">
-    <div class="wrap">
-       <div class="editor" id="editor" contenteditable></div>
-    </div>
-    <button class="the_submit">Submit</button>
-  </div>
-
-  <!-- Tab 4 -->
-  <h3 class="tab_drawer_heading" rel="tab4">Tab 4</h3>
-  <div id="tab4" class="tab_content">
-    <div class="wrap">
-       <div class="editor" id="editor" contenteditable></div>
-    </div>
-      <button class="the_submit">Submit</button>
-  </div>
-</div>
-
 
 <div id="myModal" class="modal">
   <!-- Modal content -->
@@ -69,9 +31,7 @@
         <hr>
         <hr>
         <hr>
-
       <button id='submit_button'>Submit</button>
-
   </div>
 
 
@@ -83,37 +43,90 @@
   import jQuery from 'jquery/dist/jquery.js'
   import $ from 'jquery/dist/jquery.js'
   import modal from 'bootstrap/dist/css/bootstrap.css'
+  import {store} from './store/store.js'
+  import * as firebase from 'firebase';
+
+
 export default {
   name: 'TextEditor',
+  props: ['userID'],
+  state: {
+    auth: ''
+  },
   data () {
     return {
+      authID  : 'd',
+      tab_names : ['tab']
     }
+  },
+
+  methods: {  
+    adding_tab : function() {
+      //console.log("test123");
+      //console.log(this.tab_names);
+      this.tab_names.push("new tab");
+      // update back end  
+      this.authID = this.$store.state.auth_id;
+      var ref = firebase.app().database().ref();
+      var usersRef = ref.child('users');
+      var currUser = usersRef.child(this.$store.state.auth_id);
+      var tabList = currUser.child('tabs');
+
+
+
+    }
+
   },
   mounted(){
   	var currWord = "";
+    var modal = document.getElementById('myModal');
+    var span = document.getElementsByClassName("close")[0];
+    console.log("auth = " + this.$store.state.auth_id);
+    this.authID = this.$store.state.auth_id;
+    var ref = firebase.app().database().ref();
+    var usersRef = ref.child('users');
+    var currUser = usersRef.child(this.$store.state.auth_id);
+    var tabList = currUser.child('tabs');
+    console.log("temp = " + this.tab_names.name)
 
-var modal = document.getElementById('myModal');
-var span = document.getElementsByClassName("close")[0];
+    //update tab list
+      tabList.on('value', function(snapshot){
+    snapshot.forEach(function(child){
+        var key = child.key;
+        var value = child.val();
+        console.log("value = " + key);
+    });
+});
 
-span.onclick = function() {
-    modal.style.display = "none";
-}
+    //set user name
+    currUser.set({
+        test: {
+          one: 0,
+          two: 1
+        }
+    });
 
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
+    //currUser sets current tabs open
+
+
+
+    //check if user exists
+    //if user exists, load appropriate data
+
+    //create user
+
 
 
 $(".adding_tab").click(function(){
-  console.log("this = " + $(this).parent().append('  <li class="active" rel="tab4"><input type="text" readonly value="Tab 4"></li>'));
+  console.log("clicked");
+  //console.log(this.state.auth);
 
 });
 
+
 $(".active").dblclick(function(){
   console.log("clicked");
-  $(this).find('input').removeAttr('readonly');
+   $(this).find('input').removeAttr('readonly');
 });
 
       $('input').keypress(function (e) {

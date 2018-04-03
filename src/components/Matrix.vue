@@ -59,8 +59,6 @@
         });
 
       var currNode;
-
-
       $(document).ready(function(){
 
       });
@@ -73,6 +71,8 @@
         e.stopPropagation();  
         console.log("this currently = " + $(this).find('input').val());
         $(this).find('input').removeAttr('readonly');
+        console.log(this.data);
+
       });
 
       /*

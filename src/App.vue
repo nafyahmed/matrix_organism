@@ -1,6 +1,7 @@
 <template>
+  <!-- if the user is not logged in then display this -->
   <div id="app">
-    <div id="login" v-if="sign_in">
+    <div id="login" v-if="$store.state.logged_in == false">
       <div id="loginMenu" className="container">
         <div className="row" id="loginMenu2">
             <div className="col-md-4"></div>
@@ -31,12 +32,13 @@
     </div>   
  </div>
 
-    <div id="content" v-if="logged_in">
+
+ <!-- If the user is logged in -->
+
+    <div id="content" v-if="$store.state.logged_in">
                      <div id="matrix_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%; float: left; color: white;">Organism Matrix</div>
                             <div id="text_editor_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%; float: right; color: white;">Text Editor</div>
-
        <div id='matrix_element' style=" float: left;">
-
       <Matrix></Matrix>
     </div>
     <div id='text_editor' style="width: 710px; float: right; margin-right: 10px; ">
@@ -45,16 +47,6 @@
     <div class="vr"></div>
 
 </div>
-<!--   <label>Name</label>
-  <input type="text" v-model="name" />
-  <button @click="submitName()">Add</button> -->
-<!--   <div>
-    <table>
-      <tr v-for="personName of names" v-bind:key="personName['.key']">
-        {{personName.name}}
-      </tr>
-    </table>
-  </div> -->
   </div>
 </template>
 
@@ -64,6 +56,7 @@ export default {
 }
 </script>
 
+<!-- Script for handling login functionality and switching views -->
 <script>
 import TextEditor from './components/TextEditor'
 import Matrix from './components/Matrix'
@@ -78,10 +71,11 @@ export default {
   data(){
     return{
       name: 'Paul',
-      logged_in: true,
-      sign_in: false,
+      logged_in: false,
+      sign_in: true,
       email: '',
-      password: ''
+      password: '',
+      auth_id: ''
     }
   },
 /*  firebase: {
@@ -92,9 +86,7 @@ export default {
       nodesRef.push({name: this.name})
     },
     login(){
-      /*
-       * add firebase db authentication
-       */
+       console.log(this.$store.state.counter);
 
         const email = txtEmail.value.toString();
         console.log("email = " + email);
@@ -103,8 +95,9 @@ export default {
         const auth = firebase.auth();
         const promise = firebase.auth().signInWithEmailAndPassword(email, pass).then(
             user => {
-              this.logged_in = true;
+              this.$store.state.logged_in = true;
               this.sign_in = false;
+              this.auth_id = user.uid;
             },
           )
         .catch(
@@ -112,9 +105,17 @@ export default {
             console.log("error");
             $("#txtResult").empty();
             $("#txtResult").append("Error logging in");
-
             return;
           });
+
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            this.auth_id = user.uid;
+            this.$store.state.auth_id = user.uid;
+            console.log("this1 = " +  this.$store.state.auth_id);
+            TextEditor.data.authID = 'f';
+        }
+      });
 
 
     },
@@ -151,7 +152,8 @@ export default {
     TextEditor, Matrix, Login
   },
     mounted(){
-
+              console.log("this = " + this.auth_id);
+              this.$store.state.auth_id = this.auth_id;
   }
 }
 </script>
