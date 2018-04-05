@@ -116,8 +116,7 @@ export default {
             TextEditor.data.authID = 'f';
         }
       });
-
-
+      this.load();
     },
     signup(){
         const email = txtEmail.value.toString();
@@ -144,6 +143,21 @@ export default {
             val = 1;
             return;
           });
+
+    },
+    load(){
+
+      //update tab list
+/*      tabList.on('value', function(snapshot){
+      snapshot.forEach(function(child){
+          var key = child.key;
+          this.$store.tab_list.push(key);
+          //this.tab_names.push("new tab");
+          var value = child.val();
+          console.log("value = " + value);
+          console.log("test");
+      });
+  });*/
 
     }
   },

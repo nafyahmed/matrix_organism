@@ -1,38 +1,36 @@
 <template>
   <div class="TextEditor">
 
+  <ul id="secret_stuff" style="display: none;">
+  </ul>
+
 <ul class="tabs">
-  <li class="adding_tab" rel="add" v-on:click="adding_tab">+</li> 
+  <li class="adding_tab" id="add_tab" rel="add">+</li> 
   <li v-for="(value, key, index) in tab_names">{{value}}</li>
 </ul>
 
 
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h1 style="text-align: center;">Tab Name</h1>
+    <input id="tab_input" style="height: 50px;"></input>
+    <button id="submit_button" v-on:click="adding_tab">Submit</button>
+  </div>
+
+</div>
+
+
 <div class="tab_container">
- 
+ <textarea style="width: :500px;"></textarea>
 <!-- load from fb-->
 
 
 </div>
 
-<div id="myModal" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h4>Leaf Description</h4>
-      <input type="text">
-    <h4>Leaf Color</h4> 
-           <div class="color-wrapper">
-          <p>Choose color (# hex)</p>
-          <input type="text" name="custom_color" placeholder="#FFFFFF" id="pickcolor" class="call-picker">
-          <div class="color-holder call-picker"></div>
-          <div class="color-picker" id="color-picker" style="display: none"></div>
-        </div>
-        <hr>
-        <hr>
-        <hr>
-        <hr>
-      <button id='submit_button'>Submit</button>
-  </div>
+
 
 
 </div>
@@ -56,7 +54,7 @@ export default {
   data () {
     return {
       authID  : 'd',
-      tab_names : ['tab']
+      tab_names : []
     }
   },
 
@@ -64,7 +62,7 @@ export default {
     adding_tab : function() {
       //console.log("test123");
       //console.log(this.tab_names);
-      this.tab_names.push("new tab");
+     // this.tab_names.push("new tab");
       // update back end  
       this.authID = this.$store.state.auth_id;
       var ref = firebase.app().database().ref();
@@ -72,48 +70,72 @@ export default {
       var currUser = usersRef.child(this.$store.state.auth_id);
       var tabList = currUser.child('tabs');
 
+      var input = $("#tab_input").val();
+      console.log("text = " + input);
 
-
-    }
+      //var newPostKey = tabList.push().key;
+      //console.log("post key = " + newPostKey);
+      tabList.child(input).set("Empty");
+      console.log("added");
+      
+    },
 
   },
   mounted(){
   	var currWord = "";
     var modal = document.getElementById('myModal');
     var span = document.getElementsByClassName("close")[0];
-    console.log("auth = " + this.$store.state.auth_id);
-    this.authID = this.$store.state.auth_id;
-    var ref = firebase.app().database().ref();
-    var usersRef = ref.child('users');
-    var currUser = usersRef.child(this.$store.state.auth_id);
-    var tabList = currUser.child('tabs');
-    console.log("temp = " + this.tab_names.name)
-
-    //update tab list
-      tabList.on('value', function(snapshot){
-    snapshot.forEach(function(child){
-        var key = child.key;
-        var value = child.val();
-        console.log("value = " + key);
-    });
-});
-
-    //set user name
-    currUser.set({
-        test: {
-          one: 0,
-          two: 1
-        }
-    });
-
-    //currUser sets current tabs open
+    console.log("auth = " + this.$store.state.tab_list);
+      var ref = firebase.app().database().ref();
+      var usersRef = ref.child('users');
+      console.log("test2 = " + this.$store.state.auth_id);
+      var currUser = usersRef.child(this.$store.state.auth_id);
+      var tabList = currUser.child('tabs');
 
 
+      tabList.on('value', snapshot => { 
+        snapshot.forEach(child =>{
+          var value = child.val();
+          var key = child.key;
+          if(!this.tab_names.includes(key)){
+           this.tab_names.push(key);
+          }
+          console.log("the CHILD = " + key);
+          })
+      });
 
-    //check if user exists
-    //if user exists, load appropriate data
 
-    //create user
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("add_tab");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+var submit = document.getElementById("submit_button");
+
+// When the user clicks on the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+submit.onclick = function(){
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
 
 
@@ -181,39 +203,13 @@ $("#editor").keypress(function(e){
 });
 
 
-/*
- * Color picker script
- */
 
-    var colorList = [ '000000', '993300', '333300', '003300', '003366', '000066', '333399', '333333', 
-'660000', 'FF6633', '666633', '336633', '336666', '0066FF', '666699', '666666', 'CC3333', 'FF9933', '99CC33', '669966', '66CCCC', '3366FF', '663366', '999999', 'CC66FF', 'FFCC33', 'FFFF66', '99FF66', '99CCCC', '66CCFF', '993366', 'CCCCCC', 'FF99CC', 'FFCC99', 'FFFF99', 'CCffCC', 'CCFFff', '99CCFF', 'CC99FF', 'FFFFFF' ];
-    var picker = $('#color-picker');
-
-    for (var i = 0; i < colorList.length; i++ ) {
-      picker.append('<li class="color-item" data-hex="' + '#' + colorList[i] + '" style="background-color:' + '#' + colorList[i] + ';"></li>');
-    }
-
-    $('body').click(function () {
-      picker.fadeOut();
-    });
-
-    $('.call-picker').click(function(event) {
-      event.stopPropagation();
-      picker.fadeIn();
-      picker.children('li').hover(function() {
-        var codeHex = $(this).data('hex');
-
-        $('.color-holder').css('background-color', codeHex);
-        $('#pickcolor').val(codeHex);
-      });
-    });
 
 
 
 
 
      // tabbed content
-    // http://www.entheosweb.com/tutorials/css/tabs.asp
     $(".tab_content").hide();
     $(".tab_content:first").show();
 
@@ -481,6 +477,50 @@ input{
 
 .text_input{
   cursor: pointer;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#submit_button{
+  float:right;
+  width: 50px;
 }
 
 </style>

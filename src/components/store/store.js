@@ -7,7 +7,8 @@ export const store = new Vuex.Store({
 	state: {
 		counter: 0,
 		logged_in: false,
-		auth_id: -1
+		auth_id: -1,
+		tab_list: []
 
 	}
 });
