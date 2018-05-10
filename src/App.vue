@@ -1,41 +1,24 @@
 <template>
   <!-- if the user is not logged in then display this -->
   <div id="app">
-    <div id="login" v-if="$store.state.logged_in == false">
-      <div id="loginMenu" className="container">
-        <div className="row" id="loginMenu2">
-            <div className="col-md-4"></div>
-            <div className="col-md-4 login-box">
-                <div className="col-lg-12 login-key">
-                    <i className="fa fa-key"></i>
-                </div>
-                <div className="col-lg-12 login-title">
-                </div>
-                <div className="col-lg-12 login-form">
-                    <div className="col-lg-12 login-form">
-                        <div id="txtResult"></div>
-                        <input id="txtEmail" className="form-control" type="email" placeholder = "Email"></input>
-                        <br>
-                        <input id="txtPassword" className="form-control" type="password" placeholder="Password"></input>
-                    </div>
-                    <div className="col-lg-12 loginbttm">
-                        <div className="col-lg-12 login-btm login-text">
-                        </div>
-                        <div className="col-lg-12 login-btm login-button">
-                            <button id="btnLogin" className="btn btn-outline-primary" @click="login()">Login</button>
-                            <button id="btnSignUp" className="btn btn-outline-primary" @click="signup()">Sign up</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+ <div id="login" v-if="!$store.state.logged_in">   
+    <div class="body"></div>
+        <div class="grad"></div>
+        <div class="header">
+          <div>Vue<span>Organism</span></div>
         </div>
-    </div>   
- </div>
+        <br>
+        <div class="login">
+            <input id="txtEmail" type="text" placeholder="username" name="user"><br>
+            <input  id="txtPassword" type="password" placeholder="password" name="password"><br>
+            <input type="button" value="Login"  @click="login()">
+        </div>
+</div>
 
+     <!-- If the user is logged in -->
 
- <!-- If the user is logged in -->
-
-    <div id="content" v-if="$store.state.logged_in">
+    <div id="content" v-if="$store.state.logged_in" style="background-color: black;">
                      <div id="matrix_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%; float: left; color: white;">Organism Matrix</div>
                             <div id="text_editor_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%; float: right; color: white;">Text Editor</div>
        <div id='matrix_element' style=" float: left;">
@@ -46,7 +29,7 @@
     </div>
     <div class="vr"></div>
 
-</div>
+</div>  
   </div>
 </template>
 
@@ -172,194 +155,159 @@ export default {
 }
 </script>
 
-<style>
-body {
-  background-image: url("background2.jpg");
+<style scoped>
 
-  background-color: #007bff;
+@import url(https://fonts.googleapis.com/css?family=Exo:100,200,400);
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:700,400,300);
+
+body{
+  margin: 0;
+  padding: 0;
+  background: #fff;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+
+  color: #fff;
+  font-family: Arial;
+  font-size: 12px;
 }
-td{
-  background-color: white;
+
+.body{
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -40px;
+  bottom: -40px;
+  width: auto;
+  height: auto;
+  background-size: cover;
+  -webkit-filter: blur(5px);
+  z-index: 0;
 }
+
+.grad{
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -40px;
+  bottom: -40px;
+  width: auto;
+  height: auto;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.header{
+  position: absolute;
+  top: calc(50% - 35px);
+  left: calc(50% - 255px);
+  z-index: 2;
+}
+
+.header div{
+  float: left;
+  color: #fff;
+  font-family: 'Exo', sans-serif;
+  font-size: 35px;
+  font-weight: 200;
+}
+
+.header div span{
+  color: #5379fa !important;
+}
+
+.login{
+  position: absolute;
+  top: calc(50% - 75px);
+  left: calc(50% - 50px);
+  height: 150px;
+  width: 350px;
+  padding: 10px;
+  z-index: 2;
+}
+
+.login input[type=text]{
+  width: 250px;
+  height: 30px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 2px;
+  color: #fff;
+  font-family: 'Exo', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 4px;
+}
+
+.login input[type=password]{
+  width: 250px;
+  height: 30px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 2px;
+  color: #fff;
+  font-family: 'Exo', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 4px;
+  margin-top: 10px;
+}
+
+.login input[type=button]{
+  width: 260px;
+  height: 35px;
+  background: #fff;
+  border: 1px solid #fff;
+  cursor: pointer;
+  border-radius: 2px;
+  color: #a18d6c;
+  font-family: 'Exo', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 6px;
+  margin-top: 10px;
+}
+
+.login input[type=button]:hover{
+  opacity: 0.8;
+}
+
+.login input[type=button]:active{
+  opacity: 0.6;
+}
+
+.login input[type=text]:focus{
+  outline: none;
+  border: 1px solid rgba(255,255,255,0.9);
+}
+
+.login input[type=password]:focus{
+  outline: none;
+  border: 1px solid rgba(255,255,255,0.9);
+}
+
+.login input[type=button]:focus{
+  outline: none;
+}
+
+::-webkit-input-placeholder{
+   color: rgba(255,255,255,0.6);
+}
+
+::-moz-input-placeholder{
+   color: rgba(255,255,255,0.6);
+}
+
+
+
+#text_editor{
+  border-style: solid;
+  border-color: black;
+  color: black;
+}
+
 #matrix_element{
-  background-color: black;
-}
-
-
-#txtEmail {
-    margin-top: 75px;
-    height: auto;
-    background: white;
-    text-align: center;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
-
-
-.login-key {
-    height: 100px;
-    font-size: 80px;
-    line-height: 100px;
-    background: -webkit-linear-gradient(#27EF9F, #0DB8DE);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.login-title {
-    margin-top: 15px;
-    text-align: center;
-    font-size: 30px;
-    letter-spacing: 2px;
-    margin-top: 15px;
-    font-weight: bold;
-    /*color: #6C6C6C;*/
-    color: #333;
-}
-
-.login-form {
-    margin-top: 25px;
-    text-align: left;
-}
-
-input[type=email] {
-    background-color: white;
-    border: none;
-    border-bottom: 2px solid #0DB8DE;
-    border-top: 0px;
-    border-radius: 0px;
-    font-weight: bold;
-    outline: 0;
-    margin-bottom: 20px;
-    padding-left: 0px;
-    color: black;
-}
-
-input[type=password] {
-    background-color: white;
-    border: none;
-    border-bottom: 2px solid #0DB8DE;
-    border-top: 0px;
-    border-radius: 0px;
-    font-weight: bold;
-    outline: 0;
-    padding-left: 0px;
-    margin-bottom: 20px;
-    color: black;
-}
-
-input#email, input#password {
-    border: none;
-    border-bottom: 2px solid #0DB8DE;
-    border-radius: 0px;
-    box-shadow: none;
-}
-
-.form-group {
-    margin-bottom: 40px;
-    outline: 0px;
-}
-
-.form-control:focus {
-    border-color: inherit;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    border-bottom: 2px solid #0DB8DE;
-    outline: 0;
-    background-color: #1A2226;
-    color: black;
-}
-
-input:focus {
-    outline: none;
-    box-shadow: 0 0 0;
-}
-
-
-label {
-    margin-bottom: 0px;
-    font-size: 13px !important;
-}
-
-.form-control-label {
-    text-align: center;
-    font-size: 10px;
-    color: #6C6C6C;
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-
-.btn-outline-primary {
-    border-color: #002663;
-    color: #002663;
-    border-radius: 0px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-}
-
-.btn-outline-primary:hover {
-    background-color: #002663;
-    color: black;
-    right: 0px;
-}
-
-.login-btm {
-    float: left;
-}
-
-.login-button {
-    padding-right: 0px;
-    text-align: right;
-    margin-bottom: 25px;
-}
-
-
-.login-text {
-    text-align: left;
-    padding-left: 0px;
-    color: #A2A4A4;
-}
-
-.loginbttm {
-    padding: 0px;
-}
-
-#txtEmail{
-  width: 300px;
-  height: 30px;
-  position: relative;
-  left: 40%;
-}
-#txtPassword{
-  width: 300px;
-  height: 30px;
-  text-align: center;
-    position: relative;
-  left: 40%;
-}
-
-#btnSignUp{
-      position: relative;
-  left: 40%;
-}
-
-#btnLogin{
-      position: relative;
-  left: 40%;
-}
-
-#txtResult{
- position: absolute;
- left: 40%;
- top: 80px;
-}
-
-.vr{
-  position: relative;
-    width:1px;
-  display:table-cell;
-  background-color:black;
-  height: 1000px;
-  float: right;
-  margin-right: 150px;
+  border-style: solid;
+  border-color: black;
 }
 </style>

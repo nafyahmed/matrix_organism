@@ -300,6 +300,7 @@ table{
     margin: 0 auto;
     text-align: left;
     margin-top: 30px;
+    margin-left: 50px;
     }
 
 

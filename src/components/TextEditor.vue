@@ -4,12 +4,14 @@
   <ul id="secret_stuff" style="display: none;">
   </ul>
 
-<ul class="tabs">
-  <li class="adding_tab" id="add_tab" rel="add">+</li> 
-  <li v-for="(value, key, index) in tab_names">{{value}}</li>
+<div id ="refresh" style="float:right; width: 60px; background-color: black;"><button id="refresh_button" v-on:click="refresh_data" style="width: 60px;">&#8634;</button>
+</div>
+
+
+<ul class="icetab-container">
+  <li class="icetab" id="add_tab" rel="add">+</li> 
+  <li v-for="(value, key, index) in tab_names" v-on:click="loadData($event)" class="icetab">{{value}}</li>
 </ul>
-
-
 <div id="myModal" class="modal">
 
   <!-- Modal content -->
@@ -23,17 +25,23 @@
 </div>
 
 
+
 <div class="tab_container">
- <textarea style="width: :500px;"></textarea>
-<!-- load from fb-->
+     <div class="wrap">
+         <div class="toolbar">
+   </div>
+   <div class="editor" id="editor" contenteditable></div>
+  </div>
+  <button class="the_submit">Submit</button>
+ 
 
+</div>
+  
 
 </div>
 
 
 
-
-</div>
   </div>
 </template>
 
@@ -54,11 +62,37 @@ export default {
   data () {
     return {
       authID  : 'd',
-      tab_names : []
+      tab_names : [],
+      tab_values: []
     }
   },
 
   methods: {  
+    refresh_data : function(){
+      this.tab_names = [];
+      this.tab_values = [];
+      console.log("test");
+
+      var ref = firebase.app().database().ref();
+      var usersRef = ref.child('users');
+      console.log("test2 = " + this.$store.state.auth_id);
+      var currUser = usersRef.child(this.$store.state.auth_id);
+      var tabList = currUser.child('tabs');
+
+
+      tabList.on('value', snapshot => { 
+        snapshot.forEach(child =>{
+          var value = child.val();
+          var key = child.key;
+          if(!this.tab_names.includes(key)){
+           this.tab_names.push(key);
+           this.tab_values.push(value);
+          }
+          })
+      });
+
+
+    },
     adding_tab : function() {
       //console.log("test123");
       //console.log(this.tab_names);
@@ -79,6 +113,29 @@ export default {
       console.log("added");
       
     },
+    loadData(e) {
+      console.log("loading..." + e.target.innerText);
+      var i = 0;
+      var j = 0;
+      $(".icetab").each(function(){
+          console.log($(this).text());
+          if($(this).text().toLowerCase() == e.target.innerText.toLowerCase()){
+            $(this).css("background-color", 'white');
+            $(this).css("color", 'Black');
+            console.log("i = " + i);
+           // $('.editor').html(this.tab_values );
+            j = i;
+          }
+          else{
+            $(this).css("background-color", 'black');
+            $(this).css("color", 'white');
+          }
+          i++;
+      });
+      console.log("j = " + j);
+      $('.editor').html(this.tab_values[j]);
+    }
+
 
   },
   mounted(){
@@ -99,8 +156,8 @@ export default {
           var key = child.key;
           if(!this.tab_names.includes(key)){
            this.tab_names.push(key);
+           this.tab_values.push(value);
           }
-          console.log("the CHILD = " + key);
           })
       });
 
@@ -136,6 +193,15 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+
+
+
+$(".icetab").click(function(){
+  console.log("clickeddk");
+  //console.log($(this).val());
+  //$(this).css(  "background-color", "white");  
+});
 
 
 
@@ -259,6 +325,7 @@ body {
    background: #525764;
    font-family: Arial, sans-serif;
    font-size: 16px;
+   background-color: black;
 }
 
 .wrap {
@@ -522,5 +589,107 @@ input{
   float:right;
   width: 50px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+div {
+  box-sizing: border-box;
+  transition: all ease-in-out .5s;
+  -moz-transition: all ease-in-out .5s;
+  -webkit-transition: all ease-in-out .5s;
+}
+.icetab {
+  border: 2px solid #ff9900;
+  display: inline-block; 
+  border-bottom: 0px; 
+  margin: 0px;  
+  color: #fff;
+  cursor: pointer;
+  border-right: 0px;
+  background-color: black;
+  margin-right: 4px;
+}
+.icetab:last-child {
+  border-right: 2px solid #ff9900;  
+}
+
+#icetab-content {
+  overflow: hidden;
+  position: relative;
+  border-top: 2px solid #ff9900;
+}
+
+
+.tabcontent {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background: #fff;
+  width: 100%;
+  border-top: 0px;
+  border: 2px solid #ff9900;
+  border-top: 0px;
+  transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -webkit-transform: translateY(-100%);
+}
+
+.tabcontent:first-child {
+  position: relative; 
+}
+.tabcontent.tab-active {
+  border-top: 0px;
+  display: block;
+  transform: translateY(0%);
+  -moz-transform: translateY(0%);
+  -webkit-transform: translateY(0%);
+}
+
+
+/* A tiny wee bit of visual formating for tabs */
+body {
+  font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif; 
+  background-color: black;
+  color: #454545;
+}
+.codepen-container {
+  max-width: 700px;
+  margin: 40px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.title {
+  color: #ff9900;
+  text-align: center;
+  letter-spacing: 14px;
+  text-transform: uppercase;
+  font-size: 17px;
+  margin: 40px 0px;
+}
+.tabcontent {
+  padding: 40px;
+}
+.icetab {
+  padding: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
 
 </style>
