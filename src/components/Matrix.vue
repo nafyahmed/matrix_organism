@@ -300,12 +300,12 @@ table{
     margin: 0 auto;
     text-align: left;
     margin-top: 30px;
-    margin-left: 50px;
+    margin-left: 150px;
     }
 
 
 td{
-  width: 10px;
+  width: 100px;
 }
 
 

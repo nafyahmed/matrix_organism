@@ -18,6 +18,7 @@
     "particlesjs": "^2.2.1",
     "popper.js": "^1.14.3",
     "require": "^2.4.20",
+    "stream-json": "^0.6.1",
     "sublime": "^1.2.1",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",

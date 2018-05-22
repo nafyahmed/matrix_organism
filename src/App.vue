@@ -18,15 +18,20 @@
 
      <!-- If the user is logged in -->
 
-    <div id="content" v-if="$store.state.logged_in" style="background-color: black;">
-                     <div id="matrix_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%; float: left; color: white;">Organism Matrix</div>
-                            <div id="text_editor_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%; float: right; color: white;">Text Editor</div>
-       <div id='matrix_element' style=" float: left;">
+
+
+    <div id="content" v-if="$store.state.logged_in" style="background-color: black; border-style: solid;  height: 70vh;">
+<!--                      <div id="matrix_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%;  color: white;">Organism Matrix</div>
+                            <div id="text_editor_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%;  color: white;">Text Editor</div> -->
+
+    <div id='text_editor' style="width: 710px; margin-left: 500px; margin-right: auto; width: 30%; ">
+      <TextEditor ></TextEditor>
+    </div>
+
+       <div id='matrix_element' style="">
       <Matrix></Matrix>
     </div>
-    <div id='text_editor' style="width: 710px; float: right; margin-right: 10px; ">
-      <TextEditor></TextEditor>
-    </div>
+    
     <div class="vr"></div>
 
 </div>  
@@ -304,6 +309,7 @@ body{
   border-style: solid;
   border-color: black;
   color: black;
+
 }
 
 #matrix_element{

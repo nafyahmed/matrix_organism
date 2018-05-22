@@ -32,7 +32,7 @@
    </div>
    <div class="editor" id="editor" contenteditable></div>
   </div>
-  <button class="the_submit">Submit</button>
+  <button class="the_submit" id="calculate_info" v-on:click="calculate">Submit2</button>
  
 
 </div>
@@ -51,7 +51,8 @@
   import modal from 'bootstrap/dist/css/bootstrap.css'
   import {store} from './store/store.js'
   import * as firebase from 'firebase';
-
+  import json from '../dummy.json'
+  import stream from 'stream-json'
 
 export default {
   name: 'TextEditor',
@@ -63,7 +64,9 @@ export default {
     return {
       authID  : 'd',
       tab_names : [],
-      tab_values: []
+      tab_values: [],
+      myJson: json
+
     }
   },
 
@@ -90,8 +93,6 @@ export default {
           }
           })
       });
-
-
     },
     adding_tab : function() {
       //console.log("test123");
@@ -112,6 +113,59 @@ export default {
       tabList.child(input).set("Empty");
       console.log("added");
       
+    },
+    calculate: function() {
+      console.log("test5 = " + this.myJson);
+
+      console.log("calculate");
+      //console.log($("#editor").text());
+      var text = $("#editor").text();
+
+      var makeSource = require("stream-json");
+      var source = makeSource();
+       
+      var fs = require("fs");
+       
+      var objectCounter = 0;
+      source.on("startObject", function(){ ++objectCounter; });
+      source.on("end", function(){
+          console.log("Found ", objectCounter, " objects.");
+      });
+       
+      var Parser = require("stream-json/Parser");
+      var parser = new Parser();
+       
+      // Example of use:
+      var next = fs.createReadStream(this.myJson).pipe(parser);
+      console.log("NEXT = " + next);
+
+
+      console.log(this.myJson.biological_entity[0]);
+      //console.log(JSON.parse(text));
+/*      var obj = JSON.parse(text);
+      console.log(obj.biological_entity[0].name);
+      console.log(obj.biological_entity[1].name);
+      console.log(obj.biological_entity[0].character[0].value);
+      console.log(obj.biological_entity[0].character[1].value);
+      console.log(obj.biological_entity[0].character[2].value);
+      console.log(obj.biological_entity[0].character[3].value);
+      console.log(obj.biological_entity[0].character[4].value);*/
+
+/*
+      var name_1 = obj.biological_entity[0].name;
+      var name_2 = obj.biological_entity[1].name;*/
+/*
+      var color = obj.biological_entity[0].character[0].value;
+      var value_1 = obj.biological_entity[0].character[1].value;
+      var value_2 = obj.biological_entity[0].character[2].value;
+      var value_3 = obj.biological_entity[0].character[3].value;
+      var value_4 = obj.biological_entity[0].character[4].value;*/
+/*
+
+
+  $("#editor").text("");
+  $("#editor").text("The Names are: " + name_1 + "--" + name_2 + "\n The Color is: " + color + " The Values are " + value_1 + " " + value_2 + " " + value_3 + " " + value_4  );  */
+
     },
     loadData(e) {
       console.log("loading..." + e.target.innerText);
@@ -272,8 +326,45 @@ $("#editor").keypress(function(e){
 
 
 
+//calculate
+$("#calculate_info").click(function(){
+/*  console.log("calculate");
+  //console.log($("#editor").text());
+  var text = $("#editor").text();
+  //console.log(JSON.parse(text));
+  var obj = JSON.parse(text);
+  console.log(obj.biological_entity[0].name);
+  console.log(obj.biological_entity[1].name);
+  console.log(obj.biological_entity[0].character[0].value);
+  console.log(obj.biological_entity[0].character[1].value);
+  console.log(obj.biological_entity[0].character[2].value);
+  console.log(obj.biological_entity[0].character[3].value);
+  console.log(obj.biological_entity[0].character[4].value);
 
 
+  var name_1 = obj.biological_entity[0].name;
+  var name_2 = obj.biological_entity[1].name;
+
+  var color = obj.biological_entity[0].character[0].value;
+  var value_1 = obj.biological_entity[0].character[1].value;
+  var value_2 = obj.biological_entity[0].character[2].value;
+  var value_3 = obj.biological_entity[0].character[3].value;
+  var value_4 = obj.biological_entity[0].character[4].value;
+
+
+
+  $("#editor").text("");
+  $("#editor").text("The Names are: " + name_1 + "--" + name_2 + "\n The Color is: " + color + " The Values are " + value_1 + " " + value_2 + " " + value_3 + " " + value_4  );  */
+
+
+
+
+/*  var name = obj.biological_entity[0].name;
+  var id = obj.biological_entity[0].id;
+  var name_original = obj.biological_entity[0].name_original;
+  var type = obj.biological_entity[0].type;
+  var color =  obj.biological_entity[0].name;*/
+});
 
      // tabbed content
     $(".tab_content").hide();
@@ -429,7 +520,7 @@ select > option {
 .editor {
    position: relative;
    width: 100%;
-   height: 60vh;
+   height: 50vh;
    margin: 0 auto;
    padding: 20px;
    background: #fcfcfc;
@@ -488,6 +579,7 @@ ul.tabs li.active {
   width: 100%;
   background: #fff;
   overflow: auto;
+  margin-top: 20px;
 }
 
 .tab_content {
@@ -542,7 +634,7 @@ input{
 }
 
 
-.text_input{
+. input{
   cursor: pointer;
 }
 
@@ -629,10 +721,15 @@ div {
   border-right: 2px solid #ff9900;  
 }
 
+.icetab-container {
+  background-color: white;
+}
+
 #icetab-content {
   overflow: hidden;
   position: relative;
   border-top: 2px solid #ff9900;
+  background-color:white;
 }
 
 
