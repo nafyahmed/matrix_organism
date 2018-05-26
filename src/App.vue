@@ -1,41 +1,31 @@
 <template>
-  <!-- if the user is not logged in then display this -->
-  <div id="app">
-
- <div id="login" v-if="!$store.state.logged_in">   
-    <div class="body"></div>
-        <div class="grad"></div>
-        <div class="header">
-          <div>Vue<span>Organism</span></div>
+    <!-- if the user is not logged in then display this -->
+    <div id="app">
+        <div id="login" v-if="!$store.state.logged_in">   
+            <div class="body"></div>
+            <div class="grad"></div>
+            <div class="header">
+                <div>Vue<span>Organism</span></div>
+            </div>
+            <br>
+            <div class="login">
+                <input id="txtEmail" type="text" placeholder="username" name="user"><br>
+                <input  id="txtPassword" type="password" placeholder="password" name="password"><br>
+                <input type="button" value="Login"  @click="login()">
+            </div>
         </div>
-        <br>
-        <div class="login">
-            <input id="txtEmail" type="text" placeholder="username" name="user"><br>
-            <input  id="txtPassword" type="password" placeholder="password" name="password"><br>
-            <input type="button" value="Login"  @click="login()">
-        </div>
-</div>
 
-     <!-- If the user is logged in -->
-
-
-
-    <div id="content" v-if="$store.state.logged_in" style="background-color: black; border-style: solid;  height: 70vh;">
-<!--                      <div id="matrix_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%;  color: white;">Organism Matrix</div>
-                            <div id="text_editor_header" style="text-align: center; background-color: black; font-size: 15px; width: 50%;  color: white;">Text Editor</div> -->
-
-    <div id='text_editor' style="width: 710px; margin-left: 500px; margin-right: auto; width: 30%; ">
-      <TextEditor ></TextEditor>
+        <!-- If the user is logged in -->
+        <div id="content" v-if="$store.state.logged_in" style="background-color: black; border-style: solid;  height: 70vh;">
+            <div id='text_editor' style="width: 710px; margin-left: 500px; margin-right: auto; width: 30%; ">
+                <TextEditor ></TextEditor>
+            </div>
+            <div id='matrix_element' style="">
+                <Matrix></Matrix>
+            </div>
+            <div class="vr"></div>
+        </div>  
     </div>
-
-       <div id='matrix_element' style="">
-      <Matrix></Matrix>
-    </div>
-    
-    <div class="vr"></div>
-
-</div>  
-  </div>
 </template>
 
 <script>
@@ -49,11 +39,10 @@ export default {
 import TextEditor from './components/TextEditor'
 import Matrix from './components/Matrix'
 import Login from './components/Login'
-  import jQuery from 'jquery/dist/jquery.js'
-  import $ from 'jquery/dist/jquery.js'
-  import modal from 'bootstrap/dist/css/bootstrap.css'
+import jQuery from 'jquery/dist/jquery.js'
+import $ from 'jquery/dist/jquery.js'
+import modal from 'bootstrap/dist/css/bootstrap.css'
 import * as firebase from 'firebase';
-
 
 export default {
   data(){
@@ -66,9 +55,6 @@ export default {
       auth_id: ''
     }
   },
-/*  firebase: {
-    names: nodesRef
-  },*/
   methods: {
     submitName(){
       nodesRef.push({name: this.name})
@@ -134,48 +120,31 @@ export default {
 
     },
     load(){
-
-      //update tab list
-/*      tabList.on('value', function(snapshot){
-      snapshot.forEach(function(child){
-          var key = child.key;
-          this.$store.tab_list.push(key);
-          //this.tab_names.push("new tab");
-          var value = child.val();
-          console.log("value = " + value);
-          console.log("test");
-      });
-  });*/
-
     }
   },
   name: 'App',
   components: {
     TextEditor, Matrix, Login
   },
-    mounted(){
-              console.log("this = " + this.auth_id);
-              this.$store.state.auth_id = this.auth_id;
+  mounted(){
+      console.log("this = " + this.auth_id);
+      this.$store.state.auth_id = this.auth_id;
   }
 }
 </script>
 
 <style scoped>
-
 @import url(https://fonts.googleapis.com/css?family=Exo:100,200,400);
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:700,400,300);
-
 body{
   margin: 0;
   padding: 0;
   background: #fff;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
-
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
   color: #fff;
   font-family: Arial;
   font-size: 12px;
 }
-
 .body{
   position: absolute;
   top: -20px;
@@ -188,7 +157,6 @@ body{
   -webkit-filter: blur(5px);
   z-index: 0;
 }
-
 .grad{
   position: absolute;
   top: -20px;
@@ -201,14 +169,12 @@ body{
   z-index: 1;
   opacity: 0.7;
 }
-
 .header{
   position: absolute;
   top: calc(50% - 35px);
   left: calc(50% - 255px);
   z-index: 2;
 }
-
 .header div{
   float: left;
   color: #fff;
@@ -216,11 +182,9 @@ body{
   font-size: 35px;
   font-weight: 200;
 }
-
 .header div span{
   color: #5379fa !important;
 }
-
 .login{
   position: absolute;
   top: calc(50% - 75px);
@@ -230,7 +194,6 @@ body{
   padding: 10px;
   z-index: 2;
 }
-
 .login input[type=text]{
   width: 250px;
   height: 30px;
@@ -243,7 +206,6 @@ body{
   font-weight: 400;
   padding: 4px;
 }
-
 .login input[type=password]{
   width: 250px;
   height: 30px;
@@ -257,7 +219,6 @@ body{
   padding: 4px;
   margin-top: 10px;
 }
-
 .login input[type=button]{
   width: 260px;
   height: 35px;
@@ -272,46 +233,34 @@ body{
   padding: 6px;
   margin-top: 10px;
 }
-
 .login input[type=button]:hover{
   opacity: 0.8;
 }
-
 .login input[type=button]:active{
   opacity: 0.6;
 }
-
 .login input[type=text]:focus{
   outline: none;
   border: 1px solid rgba(255,255,255,0.9);
 }
-
 .login input[type=password]:focus{
   outline: none;
   border: 1px solid rgba(255,255,255,0.9);
 }
-
 .login input[type=button]:focus{
   outline: none;
 }
-
 ::-webkit-input-placeholder{
    color: rgba(255,255,255,0.6);
 }
-
 ::-moz-input-placeholder{
    color: rgba(255,255,255,0.6);
 }
-
-
-
 #text_editor{
   border-style: solid;
   border-color: black;
   color: black;
-
 }
-
 #matrix_element{
   border-style: solid;
   border-color: black;
